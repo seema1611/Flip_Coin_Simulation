@@ -5,7 +5,7 @@ isHead=1
 coinCheck=$((RANDOM%2))
 if [ $coinCheck -eq $isHead ]
 then
-		echo "HEAD"
+	echo "HEAD"
 else
-		echo "TAIL"
+	echo "TAIL"
 fi
