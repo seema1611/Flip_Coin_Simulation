@@ -4,7 +4,7 @@
 declare -A coinCombinations
 
 #Constants
-DOUBLET=2
+TRIPLET=3
 
 #Function to generate a combinations
 function flipCoin() {
@@ -57,6 +57,6 @@ function main() {
 	calcPercentage
 }
 
-echo "Double combination of flipped coin"
-main $DOUBLET
+echo "Triple combination of flipped coin"
+main $TRIPLET
 
