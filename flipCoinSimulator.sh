@@ -1,45 +1,62 @@
-#! /bin/bash -x
+#! /bin/bash
 
 #Declaration of Dictionary
-declare -A flipCoinDictionary
+declare -A coinCombinations
 
-#function to flip coin and check either "H" or "T"
+#Constants
+DOUBLET=2
+
+#Function to generate a combinations
 function flipCoin() {
 
-	coinCheck=$((RANDOM%2))
-	if [ $coinCheck -eq 1 ]
+	if [ $((RANDOM%2)) -eq 1 ]
 	then
-		echo "H"
+		result+=H
+		echo $result
 	else
-		echo "T"
+		result+=T
+		echo $result
 	fi
+
 }
 
-#function to findout percentage of "H" and "T"
-function getPercentage() {
+#Function to calculate percentage
+function calcPercentage() {
 
-	for result in ${!flipCoinDictionary[@]}
+	for result in ${!coinCombinations[@]}
 	do
-		flipCoinDictionary[$result]=$(($((${flipCoinDictionary[$result]}*100))/$numberOfFlips))
+		coinCombinations[$result]=$(($((${coinCombinations[$result]}*100)) / numberOfFlips))
 	done
+	echo "Key        : ${!coinCombinations[@]}"
+	echo "Percentage : ${coinCombinations[@]}"
 
-	echo "Percentage: ${flipCoinDictionary[@]}"
+
 }
 
-#Main function to findout "H" and "T" flip times
+#Main function to find count of combinations
 function main() {
-	read -p "Enter the number we want to flip: " numberOfFlips
+	read -p "Enter the number: " numberOfFlips
+	numberOfCoins=$1
 
-	for(( i=1; i<=$numberOfFlips; i++ ))
+	for(( i=1; i<=$numberOfFlips; i++))
 	do
-		result=$(flipCoin)
-		flipCoinDictionary[$result]=$((${flipCoinDictionary[$result]}+1))
+
+		result=""
+		for(( j=1; j<=$numberOfCoins; j++))
+		do
+			result=$(flipCoin)
+		done
+
+		echo $result
+		coinCombinations[$result]=$((${coinCombinations[$result]} + 1))
 	done
 
-	echo "Keys:  ${!flipCoinDictionary[@]}"
-	echo "Count: ${flipCoinDictionary[@]}"
-	getPercentage
+   echo "Key   : ${!coinCombinations[@]}"
+   echo "Count : ${coinCombinations[@]}"
+
+	calcPercentage
 }
 
-#Main function
-main
+echo "Double combination of flipped coin"
+main $DOUBLET
+
