@@ -1,9 +1,11 @@
-#! /bin/bash
+#! /bin/bash -x
 
 #Declaration of Dictionary
 declare -A coinCombinations
 
 #Constants
+SINGLET=1
+DOUBLET=2
 TRIPLET=3
 
 #Function to generate a combinations
@@ -17,7 +19,6 @@ function flipCoin() {
 		result+=T
 		echo $result
 	fi
-
 }
 
 #Function to calculate percentage
@@ -27,14 +28,22 @@ function calcPercentage() {
 	do
 		coinCombinations[$result]=$(($((${coinCombinations[$result]}*100)) / numberOfFlips))
 	done
-	echo "Key        : ${!coinCombinations[@]}"
 	echo "Percentage : ${coinCombinations[@]}"
-
-
+	echo "Winning Combinations: $(winning)"
 }
 
-#Main function to find count of combinations
+#Function to show winning combinations here
+function winning() {
+	for result in ${!coinCombinations[@]}
+	do
+		echo $result ${coinCombinations[$result]}
+	done | sort -k2 -rn |head -1
+}
+
+#Function to findout all combinations
 function main() {
+
+	declare -A coinCombinations
 	read -p "Enter the number: " numberOfFlips
 	numberOfCoins=$1
 
@@ -57,6 +66,9 @@ function main() {
 	calcPercentage
 }
 
-echo "Triple combination of flipped coin"
+echo "singlet combination of flipped coin"
+main $SINGLET
+echo "Doublet combination of flipped coin"
+main $DOUBLET
+echo "Triplet combination of flipped coin"
 main $TRIPLET
-
